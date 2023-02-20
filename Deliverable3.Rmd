@@ -1,0 +1,19 @@
+---
+title: 'Third Graph Assignment' 
+output: html_notebook
+author: 'Cinthia Illan Vazquez and Devon Lombard Henley' 
+---
+
+
+```{r}
+#load libraries
+library(tidyverse)
+```
+```{r}
+#load data from local and create tabular data frame 
+df_educators <- read_csv("Data/Teacher_Data.csv")
+df_countyfips <- read_csv("Data/geographic_codes.csv")
+```
+
+
+
