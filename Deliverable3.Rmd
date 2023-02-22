@@ -1,19 +1,94 @@
 ---
 title: 'Third Graph Assignment' 
 output: html_notebook
-author: 'Cinthia Illan Vazquez and Devon Lombard Henley' 
+author: 'Cinthia Illan Vazquez and Devon Lombard-Henley' 
 ---
 
 
 ```{r}
 #load libraries
 library(tidyverse)
+library(sf)
 ```
+
 ```{r}
-#load data from local and create tabular data frame 
-df_educators <- read_csv("Data/Teacher_Data.csv")
-df_countyfips <- read_csv("Data/geographic_codes.csv")
+#load data 
+data <- read_csv("Data/Finaldatafile.csv")
+
+#explore data
+str(data)
+
+zerodata<- data %>% mutate(COUNTYFP = sprintf("%03d", COUNTYFP))
+
+#format countyFP as character data
+zerodata$COUNTYFP = as.character(zerodata$COUNTYFP)
+
+#subset data
+finaldata <- subset(zerodata, DemographicCategory == "White")
+str(finaldata)
+
+#computing the clusters          
+res.pam=cluster::pam(x=finaldata$TeacherPct,
+                     k = 3,
+                     cluster.only = F)
+
+#adding column as a factor variable
+finaldata$cluster=as.factor(res.pam$clustering)
+
+finaldata$cluster=factor(finaldata$cluster, 
+                         levels=c(1,3,2), 
+                         labels=c("Low","Mid","High"), 
+                         ordered=T)
 ```
 
+```{r}
+#load map
+linkMap = "https://raw.githubusercontent.com/devonlh/Data/main/WA-53-washington-counties.json"
 
+mapWA = read_sf(linkMap)
+head(mapWA)
 
+#merge map & data
+map_indexes = merge(mapWA, #map first
+                   finaldata, 
+                   by='COUNTYFP')
+
+str(map_indexes)
+
+```
+
+```{r}
+#make Washington base map
+baseMap= ggplot(data=mapWA) + theme_classic() + 
+         geom_sf(fill='grey', 
+                 color='white') # border color
+baseMap 
+```
+
+```{r}
+#add demographic data
+DemMap= baseMap + geom_sf(data=map_indexes,
+                       aes(fill=100*TeacherPct), #variable from map_indexes
+                       color=NA)
+DemMap
+
+DemMap + scale_fill_gradient(low = '#40004b',
+                             high = '#fddbc7')
+```
+
+```{r}
+#change labels
+Legend_title="% of Educators in Each\nCounty that are White"
+
+DemMap + scale_fill_gradient(low = '#40004b',
+                             high = '#fddbc7',
+                             name=Legend_title) 
+#add title and source
+titleText = 'High Percentages Of Educators Are White In Every Washington State County'
+sourceText = 'Source: Washington Office of Superindentent of Public Instruction 2020-2021 School Year (self reported data)'
+
+DemMap + scale_fill_gradient(low = '#40004b',
+                             high = '#fddbc7',
+                             name=Legend_title) + labs(title = titleText, 
+                                                       caption = sourceText) + theme(plot.caption = element_text(hjust = 0))
+```
