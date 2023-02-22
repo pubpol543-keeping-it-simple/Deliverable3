@@ -1,7 +1,7 @@
 ---
 title: 'Third Graph Assignment' 
 output: html_notebook
-author: 'Cinthia Illan Vazquez and Devon Lombard Henley' 
+author: 'Cinthia Illan Vazquez and Devon Lombard-Henley' 
 ---
 
 
@@ -10,9 +10,15 @@ author: 'Cinthia Illan Vazquez and Devon Lombard Henley'
 library(tidyverse)
 ```
 ```{r}
-#load data from local and create tabular data frame 
-df_educators <- read_csv("Data/Teacher_Data.csv")
-df_countyfips <- read_csv("Data/geographic_codes.csv")
+#load data 
+finaldata <- read_csv("Data/Finaldatafile.csv")
+
+#explore data
+str(finaldata)
+
+#link map
+linkMap = ()
+
 ```
 
 
