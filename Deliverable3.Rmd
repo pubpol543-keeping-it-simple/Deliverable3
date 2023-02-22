@@ -8,18 +8,47 @@ author: 'Cinthia Illan Vazquez and Devon Lombard-Henley'
 ```{r}
 #load libraries
 library(tidyverse)
+library(sf)
 ```
+
 ```{r}
 #load data 
 finaldata <- read_csv("Data/Finaldatafile.csv")
 
 #explore data
 str(finaldata)
+```
 
-#link map
-linkMap = ()
+```{r}
+#find map
+linkMap="https://github.com/EvansDataScience/VAforPM_Spatial/raw/main/worldMap.geojson"
+
+mapWorld=read_sf(linkMap)
+head(mapWorld)
+
+map_indexes=merge(mapWorld, #map first
+                   finaldata, 
+                   by='ISO3')
+
 
 ```
 
+```{r}
+#make Washington base map
+states <- map_data("state")
+WA <- subset(states, region =="washington")
 
+WA_base <- ggplot(data = WA, mapping = aes(x = long, y = lat, group = group)) + coord_fixed(1.3) + geom_polygon(color = "black", fill = "gray")
 
+WA_base + theme_nothing()
+```
+
+```{r}
+#add Washington counties
+counties <- map_data("county")
+WA_county <- subset(counties, region == "washington")
+
+WA_base + theme_nothing() + 
+  geom_polygon(data = WA_county, fill = NA, color = "white") +
+  geom_polygon(color = "black", fill = NA)  # get the state border back on top
+```
