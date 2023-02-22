@@ -1,7 +1,9 @@
 ---
-title: 'Third Graph Assignment' 
-output: html_notebook
-author: 'Cinthia Illan Vazquez and Devon Lombard-Henley' 
+title: "Third Graph Assignment"
+author: "Cinthia Illan Vazquez and Devon Lombard-Henley"
+output:
+  html_document:
+    df_print: paged
 ---
 
 
@@ -43,7 +45,7 @@ finaldata$cluster=factor(finaldata$cluster,
 
 ```{r}
 #load map
-linkMap = "https://raw.githubusercontent.com/devonlh/Data/main/WA-53-washington-counties.json"
+linkMap = "https://raw.githubusercontent.com/pubpol543-keeping-it-simple/Deliverable3/main/Data/WA-53-washington-counties.json"
 
 mapWA = read_sf(linkMap)
 head(mapWA)
