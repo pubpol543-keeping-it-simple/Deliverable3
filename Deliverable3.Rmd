@@ -21,12 +21,16 @@ str(finaldata)
 
 ```{r}
 #find map
-linkMap="https://github.com/EvansDataScience/VAforPM_Spatial/raw/main/worldMap.geojson"
+linkMap = "https://github.com/EvansDataScience/VAforPM_Spatial/raw/main/worldMap.geojson"
 
-mapWorld=read_sf(linkMap)
+mapWorld = read_sf(linkMap)
 head(mapWorld)
 
-map_indexes=merge(mapWorld, #map first
+WAbase <- subset(mapWorld, NAME == "United States")
+
+WAbase
+
+map_indexes = merge(mapWorld, #map first
                    finaldata, 
                    by='ISO3')
 
