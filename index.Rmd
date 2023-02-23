@@ -80,17 +80,28 @@ DemMap + scale_fill_gradient(low = '#40004b',
 
 ```{r}
 #change labels
-Legend_title="% of Educators in Each\nCounty that are White"
+Legend_title="% of white educators \nin each county"
 
-DemMap + scale_fill_gradient(low = '#40004b',
-                             high = '#fddbc7',
-                             name=Legend_title) 
 #add title and source
-titleText = 'High Percentages Of Educators Are White In Every Washington State County'
+titleText = 'High Percentages Of White Educators In Every Washington State County'
 sourceText = 'Source: Washington Office of Superindentent of Public Instruction 2020-2021 School Year (self reported data)'
 
-DemMap + scale_fill_gradient(low = '#40004b',
-                             high = '#fddbc7',
-                             name=Legend_title) + labs(title = titleText, 
-                                                       caption = sourceText) + theme(plot.caption = element_text(hjust = 0))
+#formatting and getting rid of x and y axis 
+DemMap + 
+  scale_fill_gradient(low = '#fddbc7'
+                        , high = '#40004b'
+                        , name=Legend_title) + 
+  labs(title = titleText
+       , caption = sourceText) + 
+  theme(plot.caption = element_text(hjust = 0)
+        , legend.title = element_text(hjust = 0.0, color = '#5b5b5b')
+        , plot.title= element_text(hjust = 0.0)) + 
+  theme (axis.line = element_blank(),
+          axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank()) + 
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 1))
+
 ```
